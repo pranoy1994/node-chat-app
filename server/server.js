@@ -16,15 +16,23 @@ io.on('connection', (socket)=>{
     console.log("New User connected");
     
     //emmit a message
-    socket.emit("newMessage", {
+    /*socket.emit("newMessage", {
         from: "Pranoy",
         text:"Hey there, how are you ??",
         createdAt: 123
-    });
+    });*/
     
     //recieve a message
-    socket.on("createMessasge", (createdMessage)=>{
+    socket.on("createMessage", (createdMessage)=>{
         console.log("new Message recieved-> ", createdMessage);
+        
+        //send to everyone 
+        io.emit('newMessage', {
+            from:createdMessage.from,
+            text:createdMessage.text,
+            createdAt: new Date().getTime()
+            
+        });
     })
     
     socket.on('disconnect', () => {
