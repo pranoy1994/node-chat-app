@@ -1,5 +1,7 @@
 var socket = io();
             
+var locationButton = $('#send-location');
+
 socket.on('connect',function(){
 console.log("Connected to server.."); 
     
@@ -31,6 +33,7 @@ socket.on('newLocation', function(loc){
     a.attr("href", loc.url);
     li.append(a);
     $('#messages').append(li);
+    locationButton.attr("disabled", false);
 });
 
 /*socket.emit('createMessage',{
@@ -47,6 +50,7 @@ jQuery('#message-form').on('submit', function(e){
     text: $('[name=message]').val()
 },function(clbk, message){
   
+        $('[name=message]').val('');
         var li = $('<li></li>');
     li.text(`${message.from}: ${message.text}`);
     $('#messages').append(li);
@@ -54,8 +58,9 @@ jQuery('#message-form').on('submit', function(e){
     
 });
 
-var locationButton = $('#send-location');
+
 locationButton.on('click', function(){
+    locationButton.attr("disabled", true);
     if(!navigator.geolocation){
         return alert("Geolocation Not supported by your browser..");
     }
@@ -71,6 +76,7 @@ var li = $("<li></li>");
     a.attr('href', loc.url);
     li.append(a);
     $('#messages').append(li);
+           locationButton.attr("disabled", false);
 });
         //console.log(position);
     },function(){
