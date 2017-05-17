@@ -18,18 +18,20 @@ console.log("User disconnected..");
 
 socket.on('newMessage', function(message){
    console.log("New message arrived...", message); 
+    var formattedTime = moment(message.createdAt).format('h:mm a');
     var li = $('<li></li>');
-    li.text(`${message.from}: ${message.text}`);
+    li.text(`${message.from} ${formattedTime}: ${message.text}`);
     $('#messages').append(li);
 });
 
 
 socket.on('newLocation', function(loc){
    console.log("New message arrived...",loc); 
+    var formattedTime = moment(loc.createdAt).format('h:mm a');
     var li = $("<li></li>");
     var a = $("<a target= '_blank' >Shared a location</a>");
     console.log(loc.from);
-    li.text(`${loc.from}:`);
+    li.text(`${loc.from} ${formattedTime}:`);
     a.attr("href", loc.url);
     li.append(a);
     $('#messages').append(li);
@@ -51,8 +53,9 @@ jQuery('#message-form').on('submit', function(e){
 },function(clbk, message){
   
         $('[name=message]').val('');
+        var formattedTime = moment(message.createdAt).format('h:mm a');
         var li = $('<li></li>');
-    li.text(`${message.from}: ${message.text}`);
+    li.text(`${message.from} ${formattedTime}: ${message.text}`);
     $('#messages').append(li);
 });
     
@@ -70,9 +73,10 @@ locationButton.on('click', function(){
             longitude:position.coords.longitude
         },function(clbk, loc){
 var li = $("<li></li>");
+           var formattedTime = moment(loc.createdAt).format('h:mm a');
     var a = $("<a target= '_blank' >Shared a location</a>)");
            console.log(loc.from);
-           li.text(`${loc.from}:`);
+           li.text(`${loc.from} ${formattedTime}:`);
     a.attr('href', loc.url);
     li.append(a);
     $('#messages').append(li);
