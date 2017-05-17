@@ -30,9 +30,9 @@ io.on('connection', (socket)=>{
     });*/
     
     //recieve a message
-    socket.on("createMessage", (createdMessage)=>{
+    socket.on("createMessage", (createdMessage, callback)=>{
         console.log("new Message recieved-> ", createdMessage);
-        
+        callback("from server", createdMessage);
         //send to everyone 
         /*io.emit('newMessage', {
             from:createdMessage.from,
