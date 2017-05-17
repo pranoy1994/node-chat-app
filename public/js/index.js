@@ -21,6 +21,18 @@ socket.on('newMessage', function(message){
     $('#messages').append(li);
 });
 
+
+socket.on('newLocation', function(loc){
+   console.log("New message arrived...",loc); 
+    var li = $("<li></li>");
+    var a = $("<a target= '_blank' >Shared a location</a>");
+    console.log(loc.from);
+    li.text(`${loc.from}:`);
+    a.attr("href", loc.url);
+    li.append(a);
+    $('#messages').append(li);
+});
+
 /*socket.emit('createMessage',{
     from:"Pranoy Biswas",
     text: "Hey !!"
@@ -34,10 +46,34 @@ jQuery('#message-form').on('submit', function(e){
     from:"User",
     text: $('[name=message]').val()
 },function(clbk, message){
-    console.log(clbk);
+  
         var li = $('<li></li>');
     li.text(`${message.from}: ${message.text}`);
     $('#messages').append(li);
 });
     
+});
+
+var locationButton = $('#send-location');
+locationButton.on('click', function(){
+    if(!navigator.geolocation){
+        return alert("Geolocation Not supported by your browser..");
+    }
+    navigator.geolocation.getCurrentPosition(function(position){
+       socket.emit('createLocationMessage', {
+           latitude: position.coords.latitude,
+            longitude:position.coords.longitude
+        },function(clbk, loc){
+var li = $("<li></li>");
+    var a = $("<a target= '_blank' >Shared a location</a>)");
+           console.log(loc.from);
+           li.text(`${loc.from}:`);
+    a.attr('href', loc.url);
+    li.append(a);
+    $('#messages').append(li);
+});
+        //console.log(position);
+    },function(){
+        alert("Unable to fetch location !!");
+    });
 });

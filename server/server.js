@@ -1,7 +1,7 @@
 const express = require('express');
 const socketIO = require('socket.io');
 
-const {generateMessage} = require('./utils/message');
+const {generateMessage, location} = require('./utils/message');
 const http = require('http');
 const path = require('path');
 const publicPath = path.join(__dirname, '../public');
@@ -41,7 +41,15 @@ io.on('connection', (socket)=>{
             
         });*/
         socket.broadcast.emit('newMessage', generateMessage(createdMessage.from, createdMessage.text));
-    })
+    });
+    
+    
+    //share the geolocation to everyone
+    socket.on("createLocationMessage", (loc, callback)=>{
+      console.log(loc.latitude, loc.longitude);  
+        socket.broadcast.emit('newLocation', location("Admin",loc.latitude, loc.longitude));
+        callback("from server location", location("Admin",loc.latitude, loc.longitude));
+    });
     
     socket.on('disconnect', () => {
                console.log("User disconnected.."); 
