@@ -2,6 +2,22 @@ var socket = io();
             
 var locationButton = $('#send-location');
 
+function scrollToBottom(){
+    var messages = $('#messages');
+    var newMessage = messages.children('li:last-child');
+    
+    var clientHeight = messages.prop('clientHeight');
+    var scrollTop = messages.prop('scrollTop');
+    var scrollHeight = messages.prop('scrollHeight');
+    var newMessageHeight = newMessage.innerHeight();
+    var lastMessageHeight = newMessage.prev().innerHeight();
+    
+    if((clientHeight + scrollTop + newMessageHeight + lastMessageHeight) >= scrollHeight){
+        console.log(" should scroll");
+        messages.scrollTop(scrollHeight);
+    }
+}
+
 socket.on('connect',function(){
 console.log("Connected to server.."); 
     
@@ -18,24 +34,32 @@ console.log("User disconnected..");
 
 socket.on('newMessage', function(message){
    console.log("New message arrived...", message); 
+    
     var formattedTime = moment(message.createdAt).format('h:mm a');
-    var li = $('<li></li>');
-    li.text(`${message.from} ${formattedTime}: ${message.text}`);
-    $('#messages').append(li);
+    var template = $('#message-template').html();
+    var html = Mustache.render(template,{
+        body: message.text,
+        from: message.from,
+        createdAt: formattedTime
+    });
+     $('#messages').append(html);
+    scrollToBottom();
 });
 
 
 socket.on('newLocation', function(loc){
    console.log("New message arrived...",loc); 
     var formattedTime = moment(loc.createdAt).format('h:mm a');
-    var li = $("<li></li>");
-    var a = $("<a target= '_blank' >Shared a location</a>");
-    console.log(loc.from);
-    li.text(`${loc.from} ${formattedTime}:`);
-    a.attr("href", loc.url);
-    li.append(a);
-    $('#messages').append(li);
+    var template = $('#location-message-template').html();
+    var html = Mustache.render(template,{
+        from: loc.from,
+        createdAt: formattedTime,
+        url:loc.url
+        
+    });
+    $('#messages').append(html);
     locationButton.attr("disabled", false);
+    scrollToBottom();
 });
 
 /*socket.emit('createMessage',{
@@ -54,9 +78,14 @@ jQuery('#message-form').on('submit', function(e){
   
         $('[name=message]').val('');
         var formattedTime = moment(message.createdAt).format('h:mm a');
-        var li = $('<li></li>');
-    li.text(`${message.from} ${formattedTime}: ${message.text}`);
-    $('#messages').append(li);
+    var template = $('#message-template').html();
+    var html = Mustache.render(template,{
+        body: message.text,
+        from: message.from,
+        createdAt: formattedTime
+    });
+     $('#messages').append(html);
+        scrollToBottom();
 });
     
 });
@@ -72,18 +101,24 @@ locationButton.on('click', function(){
            latitude: position.coords.latitude,
             longitude:position.coords.longitude
         },function(clbk, loc){
-var li = $("<li></li>");
+
+           console.log("jjdjoidjwoidjwoidjwoidj", clbk);
            var formattedTime = moment(loc.createdAt).format('h:mm a');
-    var a = $("<a target= '_blank' >Shared a location</a>)");
-           console.log(loc.from);
-           li.text(`${loc.from} ${formattedTime}:`);
-    a.attr('href', loc.url);
-    li.append(a);
-    $('#messages').append(li);
+           var template = $('#location-message-template').html();
+           var html = Mustache.render(template,{
+               from: loc.from,
+               createdAt: formattedTime,
+               url: loc.url
+           });
+           $('#messages').append(html);
            locationButton.attr("disabled", false);
+           scrollToBottom();
+           
+   
 });
         //console.log(position);
     },function(){
         alert("Unable to fetch location !!");
+        locationButton.attr("disabled", false);
     });
 });
