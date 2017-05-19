@@ -88,17 +88,17 @@ socket.on('newLocation', function(loc){
 
 jQuery('#message-form').on('submit', function(e){
     e.preventDefault();
+    //user sends a message-----
     socket.emit('createMessage',{
-    from:"User",
     text: $('[name=message]').val()
-},function(clbk, message){
+},function(clbk, message, user){
   
         $('[name=message]').val('');
         var formattedTime = moment(message.createdAt).format('h:mm a');
     var template = $('#message-template').html();
     var html = Mustache.render(template,{
-        body: message.text,
-        from: message.from,
+        body: message,
+        from: user,
         createdAt: formattedTime
     });
      $('#messages').append(html);

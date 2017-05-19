@@ -52,19 +52,28 @@ io.on('connection', (socket)=>{
     
     //recieve a message
     socket.on("createMessage", (createdMessage, callback)=>{
-        console.log("new Message recieved-> ", createdMessage);
-        callback("from server", createdMessage);
+        
+        var user = users.getUser(socket.id);
+        if(user[0] && isRealString(createdMessage.text)){
+            socket.to(user[0].room).broadcast.emit('newMessage', generateMessage(user[0].name, createdMessage.text));
+        
+        callback("from server", createdMessage.text, user[0].name);
+        }
         //send to everyone 
        
-        socket.broadcast.emit('newMessage', generateMessage(createdMessage.from, createdMessage.text));
+        
     });
    
     
     //share the geolocation to everyone
     socket.on("createLocationMessage", (loc, callback)=>{
-        console.log(loc.latitude, loc.longitude);  
-        socket.broadcast.emit('newLocation', location("Admin",loc.latitude, loc.longitude));
-        callback("from server location", location("Admin",loc.latitude, loc.longitude));
+        console.log(loc.latitude, loc.longitude); 
+        var user = users.getUser(socket.id); 
+        if(user[0]){
+        socket.to(user[0].room).broadcast.emit('newLocation', location(user[0].name, loc.latitude, loc.longitude));
+        
+        callback("from server location", location(user[0].name, loc.latitude, loc.longitude));
+        }
     });
     
     socket.on('disconnect', () => {
@@ -76,7 +85,6 @@ io.on('connection', (socket)=>{
         }
     });
 });
-
 
 server.listen(port, ()=>{
    console.log(`Server is running on port ${port}`); 
