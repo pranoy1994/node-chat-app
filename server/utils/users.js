@@ -26,6 +26,11 @@ class Users {
         var namesArray = users.map((user)=> user.name);
         return namesArray;
     }
+    getRoomList(){
+        
+        var rooms = this.users.map((users)=> users.room);
+        return rooms;
+    }
 }
 module.exports = {
     Users

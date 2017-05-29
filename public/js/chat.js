@@ -18,10 +18,13 @@ function scrollToBottom(){
     }
 }
 
+
+
 socket.on('connect',function(){
 console.log("Connected to server.."); 
 
     var param = $.deparam(window.location.search);
+   param.room = param.room.toLowerCase();
     socket.emit('join', param, function (err){
         if(err){
             alert(err);
@@ -35,7 +38,10 @@ console.log("Connected to server..");
             
 socket.on('disconnect', function(){
 console.log("User disconnected.."); 
+    
+    
 });
+
 
 socket.on('updateUsersList', function(users){
    console.log('User List->',users); 
@@ -48,6 +54,10 @@ socket.on('updateUsersList', function(users){
     
     
 });
+//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 socket.on('newMessage', function(message){
    console.log("New message arrived...", message); 

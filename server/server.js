@@ -16,6 +16,12 @@ var users = new Users();
 
 app.use(express.static(publicPath));
 
+app.get('/updateRoomList',(req, res)=>{
+    var rooms = users.getRoomList();
+    res.send(rooms);
+});
+
+
 io.on('connection', (socket)=>{
     console.log("New User connected");
     
@@ -80,7 +86,7 @@ io.on('connection', (socket)=>{
         console.log("User disconnected.."); 
         var user = users.removeUser(socket.id);
         if(user.length > 0){
-        socket.broadcast.to(user[0].room).emit('updateUserList',users.getUserList(user[0].room));
+        socket.broadcast.to(user[0].room).emit('updateUsersList',users.getUserList(user[0].room));
         socket.broadcast.to(user[0].room).emit('newMessage', generateMessage('Admin', `${user[0].name} has left the room`));
         }
     });

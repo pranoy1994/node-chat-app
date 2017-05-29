@@ -6,6 +6,8 @@
     <title>Join | ChatApp</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <link rel="stylesheet" href="css/styles.css">
+    <script src="/js/lib/jquery-3.2.1.min.js"></script>
+    
     </head>
     <body class="centered-form">
     <div class="centered-form__form">
@@ -26,10 +28,19 @@
         
         <div class=form-field>
         
-            <label>Room Name:</label>
-            <input type="text" name="room" required/>
+            <label>Create Room: </label>
+            <input type="text" name="room" id="rname" required/>
             
         </div>   
+
+        <div class=form-field>
+        
+            <label>Available Rooms: </label>
+            
+            <select name="room" id="rooms">
+            <option value = "null">Select Room..</option>
+            </select>
+        </div>  
         
         <div class=form-field>
         
@@ -37,6 +48,58 @@
         
         </div>   
     </form>
+
+<script>
+
+    $('#rooms').change(function(){
+        console.log($('#rooms').val());
+        if($('#rooms').val() !== "null"){
+            $('#rname').val("");
+            $('#rname').attr('disabled', true);
+        }else{
+            $('#rname').attr('disabled', false);
+            
+        }
+    });
+
+
+$.ajax({
+        url: '/updateRoomList',
+        success: function(res){
+
+            res = res.filter((e, i, a)=>{
+                return i === a.indexOf(e);
+            });
+
+            res.forEach(function(rooms){
+                $('#rooms').append( `<option value=${rooms}>${rooms}</option>`);
+            
+            });
+            
+        }
+
+
+});
+
+
+   
+
+
+    $('#rname').on('keyup', function(){
+    if($('#rname').val() === ""){
+        $('#rooms').attr('disabled', false);
+    }else{
+        $('#rooms').attr('disabled', true);
+        $('#rooms').val("");
+    }
+
+    });
+
+    </script>
+
     </div>
+
+    
+
     </body>
 </html>
