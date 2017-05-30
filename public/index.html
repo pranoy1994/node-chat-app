@@ -57,6 +57,17 @@
 
 <script>
 
+    $('document').ready(function(){
+
+        if(Notification.permission === "default"){
+            Notification.requestPermission(function (permission){
+                   
+                });
+        }
+
+
+    });
+
     $('#rooms').change(function(){
         console.log($('#rooms').val());
         if($('#rooms').val() !== "null"){

@@ -64,7 +64,16 @@ socket.on('newMessage', function(message){
     
     var formattedTime = moment(message.createdAt).format('h:mm a');
     var template = $('#message-template').html();
-    var s2="honeydew";
+    var s2;
+    var msg = message.text.split(" ");
+    if(message.from === "Admin" && msg[0] ==="Welcome"){
+        s2 = "#a1fba1";
+    }else if(message.from === "Admin" && msg[2] ==="left"){
+        s2 = "#ff7f7f";
+    }else{
+        s2="honeydew";
+    }
+    
 
     var ol = $('#messages');
     var li = ol.children("li:last-child");
@@ -99,6 +108,27 @@ socket.on('newMessage', function(message){
     });
      $('#messages').append(html);
     scrollToBottom();
+
+    if(document.hidden !== false){
+
+        if(Notification.permission === "granted"){
+            var n = new Notification(`${message.from} sent a message`, {
+                body:message.text,
+                icon:"https://d30y9cdsu7xlg0.cloudfront.net/png/31572-200.png"
+            });
+            n.onclick = function(e){
+                   
+                    window.focus();
+                    n.close();
+                }
+        }else if(Notification.permission === "default"){
+            Notification.requestPermission(function (permission){
+                   
+                });
+        }
+
+
+    }
 });
 
 
