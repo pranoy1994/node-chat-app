@@ -24,7 +24,7 @@ socket.on('connect',function(){
 console.log("Connected to server.."); 
 
     var param = $.deparam(window.location.search);
-   param.room = param.room.toLowerCase();
+   
     socket.emit('join', param, function (err){
         if(err){
             alert(err);

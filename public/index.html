@@ -70,9 +70,9 @@ $.ajax({
             res = res.filter((e, i, a)=>{
                 return i === a.indexOf(e);
             });
-
+            console.log(res);
             res.forEach(function(rooms){
-                $('#rooms').append( `<option value=${rooms}>${rooms}</option>`);
+                $('#rooms').append( `<option value="${rooms}">${rooms}</option>`);
             
             });
             
