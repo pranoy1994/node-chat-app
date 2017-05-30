@@ -64,10 +64,38 @@ socket.on('newMessage', function(message){
     
     var formattedTime = moment(message.createdAt).format('h:mm a');
     var template = $('#message-template').html();
+    var s2="honeydew";
+
+    var ol = $('#messages');
+    var li = ol.children("li:last-child");
+    var float = li.css('float');
+    var clear = li.css('clear');
+
+    if(float === "right" && clear === "right"){
+        float = "left";
+        clear = "right";
+    }else if(float === "left" && clear === "left"){
+        float = "left";
+        clear = "left";
+    }else if(float === "left" && clear === "right"){
+        float = "left";
+        clear = "left";
+    }else if(float === "right" && clear === "left"){
+        float = "left";
+        clear = "right";
+    }else{
+        float = "left";
+        clear = "left";
+    }
+
+
     var html = Mustache.render(template,{
         body: message.text,
         from: message.from,
-        createdAt: formattedTime
+        createdAt: formattedTime,
+        style: s2,
+        float,
+        clear
     });
      $('#messages').append(html);
     scrollToBottom();
@@ -78,10 +106,37 @@ socket.on('newLocation', function(loc){
    console.log("New message arrived...",loc); 
     var formattedTime = moment(loc.createdAt).format('h:mm a');
     var template = $('#location-message-template').html();
+var s2="honeydew";
+
+    var ol = $('#messages');
+    var li = ol.children("li:last-child");
+    var float = li.css('float');
+    var clear = li.css('clear');
+
+    if(float === "right" && clear === "right"){
+        float = "left";
+        clear = "right";
+    }else if(float === "left" && clear === "left"){
+        float = "left";
+        clear = "left";
+    }else if(float === "left" && clear === "right"){
+        float = "left";
+        clear = "left";
+    }else if(float === "right" && clear === "left"){
+        float = "left";
+        clear = "right";
+    }else{
+        float = "left";
+        clear = "left";
+    }
+    
     var html = Mustache.render(template,{
         from: loc.from,
         createdAt: formattedTime,
-        url:loc.url
+        url:loc.url,
+        style:s2,
+        float,
+        clear
         
     });
     $('#messages').append(html);
@@ -106,10 +161,34 @@ jQuery('#message-form').on('submit', function(e){
         $('[name=message]').val('');
         var formattedTime = moment(message.createdAt).format('h:mm a');
     var template = $('#message-template').html();
+    var s1 = "bisque";
+
+    var ol = $('#messages');
+    var li = ol.children("li:last-child");
+    var float = li.css('float');
+    var clear = li.css('clear');
+    console.log(float, clear);
+    if(float === "right" && clear === "right"){
+        float = "right";
+        clear = "right";
+    }else if(float === "left" && clear === "left"){
+        float = "right";
+        clear = "left";
+    }else if(float === "left" && clear === "right"){
+        float = "right";
+        clear = "left";
+    }else if(float === "right" && clear === "left"){
+        float = "right";
+        clear = "right";
+    }
     var html = Mustache.render(template,{
         body: message,
         from: user,
-        createdAt: formattedTime
+        createdAt: formattedTime,
+        style: s1,
+        float,
+        clear
+        
     });
      $('#messages').append(html);
         scrollToBottom();
@@ -132,10 +211,38 @@ locationButton.on('click', function(){
            console.log("jjdjoidjwoidjwoidjwoidj", clbk);
            var formattedTime = moment(loc.createdAt).format('h:mm a');
            var template = $('#location-message-template').html();
+
+           var s1 = "bisque";
+
+    var ol = $('#messages');
+    var li = ol.children("li:last-child");
+    var float = li.css('float');
+    var clear = li.css('clear');
+    console.log(float, clear);
+    if(float === "right" && clear === "right"){
+        float = "right";
+        clear = "right";
+    }else if(float === "left" && clear === "left"){
+        float = "right";
+        clear = "left";
+    }else if(float === "left" && clear === "right"){
+        float = "right";
+        clear = "left";
+    }else if(float === "right" && clear === "left"){
+        float = "right";
+        clear = "right";
+    }
+
+
+
            var html = Mustache.render(template,{
                from: loc.from,
                createdAt: formattedTime,
-               url: loc.url
+               url: loc.url,
+               style: s1,
+               float,
+               clear
+
            });
            $('#messages').append(html);
            locationButton.attr("disabled", false);

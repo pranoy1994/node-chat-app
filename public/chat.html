@@ -4,7 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <link rel="stylesheet" href="/css/styles.css">
-    
+    <style>
+    li{
+        margin: 0px 0 13px 0;
+    }
+    </style>
     <title></title>
     </head>
     <body class="chat">
@@ -26,7 +30,7 @@
         </div>
         
         <script id="message-template" type="text/template">
-        <li class="message">
+        <li class="message" style = background-color:{{style}};float:{{float}};clear:{{clear}}>
         <div class="message__title">
         <h4>{{from}}</h4>
         <span>{{createdAt}}</span>
@@ -39,7 +43,7 @@
         </script>
         
         <script id="location-message-template" type="text/template">
-        <li class="message">
+        <li class="message" style = background-color:{{style}};float:{{float}};clear:{{clear}}>
         <div class="message__title">
         <h4>{{from}}</h4>
         <span>{{createdAt}}</span>
